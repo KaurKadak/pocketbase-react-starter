@@ -1,0 +1,16 @@
+services:
+  pb:
+    image: golang:1.20-alpine
+    entrypoint: /app/pb/entrypoint.sh
+    command: "/app/pb/pocketbase serve --http 0.0.0.0:8090 --publicDir ../sk/build"
+    user: ${UID}:${GID}
+    expose:
+      - 8090
+    working_dir: /app/pb
+    environment:
+      - HOME=/app/pb
+      - AUDITLOG=${AUDITLOG}
+    volumes:
+      - ${PWD}/pb:/app/pb
+      - ${PWD}/solid:/app/solid
+      - ${HOME}/go/pkg:/go/pkg
