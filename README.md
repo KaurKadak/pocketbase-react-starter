@@ -1,1 +1,1 @@
-# PocketBase / Solid Starter Template
+# PocketBase / React Starter Template
