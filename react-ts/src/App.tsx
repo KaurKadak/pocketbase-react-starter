@@ -2,18 +2,23 @@ import { useState } from "react";
 import "./App.css";
 import PocketBase from "pocketbase";
 import { TypedPocketBase } from "./pocketbase-types";
+import MainPage from "./components/MainPage";
+import AuthPage from "./components/AuthPage";
+import { PocketBaseContext } from "./contexts/PocketBaseContext";
+import { Routes, Route, useNavigate } from "react-router-dom";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
   const pb = new PocketBase("http://127.0.0.1:8090") as TypedPocketBase;
-
-  const [loggedIn, setLoggedIn] = useState<boolean>(false);
 
   const [errorMessage, setErrorMessage] = useState<string>("");
 
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
-  const [user, setUser] = useState<string>();
+  const [name, setName] = useState<string>("");
+
+  const navigate = useNavigate();
 
   const login = async () => {
     try {
@@ -21,13 +26,12 @@ function App() {
         .collection("users")
         .authWithPassword(username, password);
       setErrorMessage("");
-      setUser(
+      setName(
         response.record.name != ""
           ? response.record.name
           : response.record.email
       );
-      console.log(response.record);
-      setLoggedIn(true);
+      navigate("/");
     } catch (error) {
       setErrorMessage("The email or password you have entered is incorrect.");
     }
@@ -41,7 +45,7 @@ function App() {
         passwordConfirm: password,
       };
 
-      const createdUser = await pb.collection("users").create(newUser);
+      await pb.collection("users").create(newUser);
       console.log("test");
       await login();
     } catch (error) {
@@ -55,58 +59,37 @@ function App() {
     pb.authStore.clear();
     setUsername("");
     setPassword("");
-    setUser("");
-    setLoggedIn(false);
+    setName("");
+    navigate("/login");
   };
 
   return (
-    <>
+    <PocketBaseContext.Provider value={pb}>
       <div className="text-4xl mb-12">PocketBase React starter</div>
-
-      {loggedIn ? (
-        <div>
-          <div>Hello {user ? user : <></>}</div>
-          <button onClick={logout} className="mt-6">
-            Log out
-          </button>
-        </div>
-      ) : (
-        <div>
-          <div className="mb-6 text-red-400">
-            {errorMessage !== "" ? errorMessage : ""}
-          </div>
-
-          <form
-            className="flex justify-center"
-            onSubmit={(e) => {
-              e.preventDefault();
-              login();
-            }}
-          >
-            <div className="flex flex-col max-w-60">
-              <label className="text-left mb-2">Email</label>
-              <input
-                type="text"
-                className="mb-2 p-2"
-                name="username"
-                onChange={(e) => setUsername(e.target.value)}
-              />
-              <label className="text-left mb-2">Password</label>
-              <input
-                type="text"
-                className="p-2"
-                name="password"
-                onChange={(e) => setPassword(e.target.value)}
-              />
-              <div className="mt-6">
-                <button type="submit">Log in</button>
-              </div>
-            </div>
-          </form>
-          <button onClick={register}>Register</button>
-        </div>
-      )}
-    </>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <ProtectedRoute>
+              <MainPage name={name} logout={logout} />
+            </ProtectedRoute>
+          }
+        />
+        ]
+        <Route
+          path="/login"
+          element={
+            <AuthPage
+              errorMessage={errorMessage}
+              login={login}
+              register={register}
+              setUsername={setUsername}
+              setPassword={setPassword}
+            />
+          }
+        />
+      </Routes>
+    </PocketBaseContext.Provider>
   );
 }
 
