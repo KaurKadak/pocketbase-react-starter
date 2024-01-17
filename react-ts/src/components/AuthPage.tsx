@@ -1,6 +1,8 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { PocketBaseContext } from "../contexts/PocketBaseContext";
 import { Navigate } from "react-router-dom";
+import EyeSvg from "../img/eye.svg";
+import EyeSlashSvg from "../img/eye-slash.svg";
 
 interface AuthPageProps {
   errorMessage: String;
@@ -17,6 +19,8 @@ export default function AuthPage({
   setUsername,
   setPassword,
 }: AuthPageProps) {
+  const [passwordShow, setPasswordShow] = useState<boolean>(false);
+
   const pb = useContext(PocketBaseContext);
 
   if (pb.authStore.isValid) {
@@ -36,7 +40,7 @@ export default function AuthPage({
           login();
         }}
       >
-        <div className="flex flex-col max-w-60">
+        <div className="flex flex-col">
           <label className="text-left mb-2">Email</label>
           <input
             type="text"
@@ -44,13 +48,27 @@ export default function AuthPage({
             name="username"
             onChange={(e) => setUsername(e.target.value)}
           />
+
           <label className="text-left mb-2">Password</label>
-          <input
-            type="text"
-            className="p-2"
-            name="password"
-            onChange={(e) => setPassword(e.target.value)}
-          />
+          <div className="flex">
+            <input
+              type={passwordShow ? "text" : "password"}
+              className="p-2"
+              name="password"
+              autoComplete="on"
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <button
+              type="button"
+              className="w-10 h-10 ml-4 p-0"
+              onClick={() => setPasswordShow(!passwordShow)}
+            >
+              <img
+                src={passwordShow ? EyeSlashSvg : EyeSvg}
+                alt="Toggle password show button"
+              />
+            </button>
+          </div>
           <div className="mt-6">
             <button type="submit">Log in</button>
           </div>
