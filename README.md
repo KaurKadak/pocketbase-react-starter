@@ -9,5 +9,18 @@ Simple React starter template that uses PocketBase as the backend.
 Functionality list:
  - Login [x]
  - Register [x]
- - Error message on incorrect credentials [x]
- - Auth check on subsequent calls [ ]
+ - Routing [x]
+ - Error message on bad login/register [x]
+ - Auth check on subsequent calls [x]
+
+Technologies used:
+  - Frontend:
+     - Tailwind
+     - React-Router v6
+     - Pocketbase SDK
+  - Backend:
+    - [PocketBase](https://pocketbase.io/) 
+
+Running guide
+---
+TODO
