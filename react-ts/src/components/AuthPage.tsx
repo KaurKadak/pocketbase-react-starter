@@ -60,7 +60,7 @@ export default function AuthPage({
             />
             <button
               type="button"
-              className="w-10 h-10 ml-4 p-0"
+              className="w-10 h-10 p-0 p-1.5 bg-[#3b3b3b]"
               onClick={() => setPasswordShow(!passwordShow)}
             >
               <img
@@ -71,10 +71,12 @@ export default function AuthPage({
           </div>
           <div className="mt-6">
             <button type="submit">Log in</button>
+            <button type="button" onClick={register}>
+              Register
+            </button>
           </div>
         </div>
       </form>
-      <button onClick={register}>Register</button>
     </div>
   );
 }
