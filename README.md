@@ -3,7 +3,7 @@
 Simple React starter template that uses PocketBase as the backend.
 
 <p align="center">
-  <img src="https://github.com/KaurKadak/pocketbase-react-starter/assets/44895755/105606ef-27bf-4649-926b-7e8a1f5c6bf2" />
+  <img src="https://github.com/KaurKadak/pocketbase-react-starter/assets/44895755/d83fa402-38f3-4328-9ed6-510f656318a8" />
 </p>
 
 Functionality list:
