@@ -12,6 +12,12 @@ Functionality list:
  - Routing [x]
  - Error message on bad login/register [x]
  - Auth check on subsequent calls [x]
+ - Email verification []
+ - Password reset/recovery []
+ - Password-based authentication [x]
+ - OAuth2 authentication []
+ - Docker-compose file for ease of use []
+ - Database migrations []
 
 Technologies used:
   - Frontend:
